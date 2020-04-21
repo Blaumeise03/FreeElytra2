@@ -1,7 +1,7 @@
 name: FreeElytra2
 version: 1.0-Beta
 main: de.blaumeise03.freeElytra2.FreeElytra2
-api-version: 1.13
+api-version: 1.15
 author: Blaumeise03
 website: http://blaumeise03.de/
 depend: [BlueUtils]
@@ -19,18 +19,18 @@ commands:
   listPads:
     description: List all start pads.
     permission: freeElytra.setting
-  reloadPads:
-    description: Reloads the configuration file
-    permission: freeElytra.setting
+#  reloadPads:
+#    description: Reloads the configuration file
+#    permission: freeElytra.setting
 permissions:
   freeElytra.elytra:
     description: Permission for Getting an Elytra
+    default: op
+  freeElytra.setting:
+    description: Permission for changing the settings of FreeElytra
     default: op
   freeElytra.*:
     description: Wildcard permission
     children:
       freeElytra.elytra: true
       freeElytra.settings: true
-  freeElytra.setting:
-    description: Permission for changing the settings of FreeElytra
-    default: op

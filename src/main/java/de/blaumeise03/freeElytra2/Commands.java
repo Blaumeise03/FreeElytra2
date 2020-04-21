@@ -1,24 +1,56 @@
 package de.blaumeise03.freeElytra2;
 
-import de.blaumeise03.blueUtils.Command;
-import de.blaumeise03.blueUtils.CommandHandler;
+
+import de.blaumeise03.blueUtils.command.Command;
+import de.blaumeise03.blueUtils.command.CommandHandler;
+import de.blaumeise03.blueUtils.exceptions.CommandNotFoundException;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.Permission;
 
 public class Commands {
     static void addCommands(){
+        Permission setPerm = new Permission("");
         CommandHandler handler = FreeElytra2.getPlugin().getHandler();
-        new Command(handler, "elytra", "Gib´t dir eine Elytra", true, true) {
+
+        Command elytraCmd = new Command("elytra", true, true, new Permission("freeElytra.elytra")) {
+            /**
+             * This method is called when a player executes this command
+             *
+             * @param sender         the {@link CommandSender} who executes the command
+             * @param args           the arguments passed to the command
+             * @param isPlayer       if the <code>sender</code> is a {@link Player Player}
+             * @param isThird        if the command was executed by the <code>originalSender</code> for another player
+             *                       e.g: /command player args.. - the command, if {@link Command#isThirdExecutable()} is true,
+             *                       gets executed at the 'player' passed as first argument
+             * @param originalSender The original sender, equals <code>sender</code> if command was not third-executed
+             */
             @Override
-            public void onCommand(String[] strings, CommandSender commandSender, boolean isPlayer, boolean isThirdExecution, CommandSender realSender) {
-                Elytra.shootPlayer((Player) commandSender);
+            public void execute(CommandSender sender, String[] args, boolean isPlayer, boolean isThird, CommandSender originalSender) {
+                Elytra.shootPlayer((Player) sender);
             }
         };
+        try {
+            handler.addCommand(elytraCmd);
+        } catch (CommandNotFoundException e) {
+            e.printStackTrace();
+        }
 
-        new Command(handler, "addPad", "Fügt ein StartPad hinzu", true, false) {
+        Command addCmd = new Command( "addPad", true, true, setPerm) {
+            /**
+             * This method is called when a player executes this command
+             *
+             * @param sender         the {@link CommandSender} who executes the command
+             * @param args           the arguments passed to the command
+             * @param isPlayer       if the <code>sender</code> is a {@link Player Player}
+             * @param isThird        if the command was executed by the <code>originalSender</code> for another player
+             *                       e.g: /command player args.. - the command, if {@link Command#isThirdExecutable()} is true,
+             *                       gets executed at the 'player' passed as first argument
+             * @param originalSender The original sender, equals <code>sender</code> if command was not third-executed
+             */
             @Override
-            public void onCommand(String[] args, CommandSender sender, boolean isPlayer, boolean isThirdExecution, CommandSender realSender) {
+            public void execute(CommandSender sender, String[] args, boolean isPlayer, boolean isThird, CommandSender originalSender) {
                 if(args.length == 7){
                     for (int i = 1; i < args.length; i++) {
                         try {
@@ -40,10 +72,26 @@ public class Commands {
                 }
             }
         };
+        try {
+            handler.addCommand(addCmd);
+        } catch (CommandNotFoundException e) {
+            e.printStackTrace();
+        }
 
-        new Command(handler, "deletePad", "Löscht ein StartPad", true, false){
+        Command delCmd = new Command( "deletePad", false, false, setPerm){
+            /**
+             * This method is called when a player executes this command
+             *
+             * @param sender         the {@link CommandSender} who executes the command
+             * @param args           the arguments passed to the command
+             * @param isPlayer       if the <code>sender</code> is a {@link Player Player}
+             * @param isThird        if the command was executed by the <code>originalSender</code> for another player
+             *                       e.g: /command player args.. - the command, if {@link Command#isThirdExecutable()} is true,
+             *                       gets executed at the 'player' passed as first argument
+             * @param originalSender The original sender, equals <code>sender</code> if command was not third-executed
+             */
             @Override
-            public void onCommand(String[] args, CommandSender sender, boolean isPlayer, boolean isThirdExecution, CommandSender realSender) {
+            public void execute(CommandSender sender, String[] args, boolean isPlayer, boolean isThird, CommandSender originalSender) {
                 if(args.length == 1){
                     StartPad.deletePad(args[0], FreeElytra2.getPadConfig());
                     sender.sendMessage(ChatColor.GREEN + "StartPad gelöscht!");
@@ -52,17 +100,38 @@ public class Commands {
                 }
             }
         };
+        try {
+            handler.addCommand(delCmd);
+        } catch (CommandNotFoundException e) {
+            e.printStackTrace();
+        }
 
-        new Command(handler, "listPads", "Listet alle StartPads auf", false, false){
+        Command listCmd = new Command( "listPads", false, false, setPerm){
+            /**
+             * This method is called when a player executes this command
+             *
+             * @param sender         the {@link CommandSender} who executes the command
+             * @param args           the arguments passed to the command
+             * @param isPlayer       if the <code>sender</code> is a {@link Player Player}
+             * @param isThird        if the command was executed by the <code>originalSender</code> for another player
+             *                       e.g: /command player args.. - the command, if {@link Command#isThirdExecutable()} is true,
+             *                       gets executed at the 'player' passed as first argument
+             * @param originalSender The original sender, equals <code>sender</code> if command was not third-executed
+             */
             @Override
-            public void onCommand(String[] args, CommandSender sender, boolean isPlayer, boolean isThirdExecution, CommandSender realSender) {
+            public void execute(CommandSender sender, String[] args, boolean isPlayer, boolean isThird, CommandSender originalSender) {
                 StringBuilder builder = new StringBuilder(ChatColor.DARK_GREEN + "StartPads:");
                 StartPad.getStartPads().forEach(p -> builder.append(ChatColor.GREEN + "\n").append(p.getName()));
                 sender.sendMessage(builder.toString());
             }
         };
+        try {
+            handler.addCommand(listCmd);
+        } catch (CommandNotFoundException e) {
+            e.printStackTrace();
+        }
 
-        new Command(handler, "reloadPads", "Lädt die Config neu §cÜberschriebt den Cache!!", false, false){
+        /*new Command(handler, "reloadPads", "Lädt die Config neu §cÜberschriebt den Cache!!", false, false){
             @Deprecated
             @Override
             public void onCommand(String[] args, CommandSender sender, boolean isPlayer, boolean isThirdExecution, CommandSender realSender) {
@@ -74,6 +143,6 @@ public class Commands {
                 }
                 sender.sendMessage(ChatColor.GREEN + "Pad-Config neugeladen!");
             }
-        };
+        };*/
     }
 }

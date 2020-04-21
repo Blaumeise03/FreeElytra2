@@ -40,6 +40,7 @@ public class FreeElytra2 extends AdvancedPlugin {
         } catch (CorruptedConfigurationException e) {
             e.printStackTrace();
         }
+        getLogger().info("Complete!");
         return true;
     }
 

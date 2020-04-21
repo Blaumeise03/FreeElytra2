@@ -1,9 +1,9 @@
 package de.blaumeise03.freeElytra2;
 
-import net.minecraft.server.v1_14_R1.NBTTagCompound;
+import net.minecraft.server.v1_15_R1.NBTTagCompound;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_15_R1.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
@@ -40,7 +40,7 @@ public class Elytra {
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
         elytra.setItemMeta(meta);
-        net.minecraft.server.v1_14_R1.ItemStack stack = CraftItemStack.asNMSCopy(elytra);
+        net.minecraft.server.v1_15_R1.ItemStack stack = CraftItemStack.asNMSCopy(elytra);
         NBTTagCompound tag = stack.getTag();
         if(tag == null) tag = new NBTTagCompound();
         tag.setBoolean("freeElytra", true);
@@ -51,7 +51,7 @@ public class Elytra {
     public static boolean equals(ItemStack stack){
         //Bukkit.broadcastMessage("Test1");
         if(stack != null) {
-            net.minecraft.server.v1_14_R1.ItemStack nmsStack = CraftItemStack.asNMSCopy(stack);
+            net.minecraft.server.v1_15_R1.ItemStack nmsStack = CraftItemStack.asNMSCopy(stack);
             NBTTagCompound tag = nmsStack.getTag();
             if(tag != null)
                 if(tag.hasKey("freeElytra"))
