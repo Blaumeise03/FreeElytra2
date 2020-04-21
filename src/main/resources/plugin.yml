@@ -1,0 +1,36 @@
+name: FreeElytra2
+version: 1.0-Beta
+main: de.blaumeise03.freeElytra2.FreeElytra2
+api-version: 1.13
+author: Blaumeise03
+website: http://blaumeise03.de/
+depend: [BlueUtils]
+
+commands:
+  elytra:
+    description: Launchs the executing player with an elytra.
+    permission: freeElytra.elytra
+  addPad:
+    description: Add a start pad.
+    permission: freeElytra.setting
+  deletePad:
+    description: Delete a start pad.
+    permission: freeElytra.setting
+  listPads:
+    description: List all start pads.
+    permission: freeElytra.setting
+  reloadPads:
+    description: Reloads the configuration file
+    permission: freeElytra.setting
+permissions:
+  freeElytra.elytra:
+    description: Permission for Getting an Elytra
+    default: op
+  freeElytra.*:
+    description: Wildcard permission
+    children:
+      freeElytra.elytra: true
+      freeElytra.settings: true
+  freeElytra.setting:
+    description: Permission for changing the settings of FreeElytra
+    default: op
